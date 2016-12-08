@@ -1,0 +1,13 @@
+create routerone
+set routerone personality "Cisco Catalyst 2948G, 4003, 4006, or 6509 switch (CatOS 7.6(17) - 8.4(3))"
+set routerone default tcp action reset
+add routerone tcp port 23 "scripts/router-telnet.pl"
+
+create netbsd
+set netbsd personality "Linux 2.6.38 - 3.2"
+set netbsd default tcp action reset
+add netbsd tcp port 22 proxy $ip_src:22
+add netbsd tcp port 80 "scripts/web.sh"
+
+bind 10.1.0.1 routerone
+bind 10.1.0.134 netbsd
